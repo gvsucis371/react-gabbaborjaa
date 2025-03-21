@@ -54,23 +54,22 @@ function Marvel(props) {
     return (
         <>
         <section>
-        <div>
-                    <h1>Welcome to Marvel Heroes</h1>
-                    <p>This is a simple React app to showcase Marvel heroes.</p>
-                </div>
-            </section>
-            <section>
-                {data.map((hero, index) => (
-                    <Hero
-                        key={index}
-                        hero={hero.hero}
-                        name={hero.name}
-                        appearances={hero.apperances}
-                    />
-                ))}
-            </section>
+            <div>
+                <h1>Welcome to Marvel Heroes</h1>
+                <p>This is a simple React app to showcase Marvel heroes.</p>
+            </div>
+        </section>
+        <section>
+            {data.map((hero, index) => (
+                <Hero
+                    key={index}
+                    hero={hero.hero}
+                    name={hero.name}
+                    appearances={hero.apperances}
+                />
+            ))}
+        </section>
         </>
-
     );
 }   
 export default Marvel;
