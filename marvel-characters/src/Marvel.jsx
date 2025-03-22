@@ -27,8 +27,7 @@ const data = [{
         { movie: "Spider-Man: Far From Home", year: 2019 },
         { movie: "Spider-Man: No Way Home", year: 2021 }
     ]
-}
-]
+}]
 function Appearances(props)  {
     return <li> {props.movie} </li>;
 }
