@@ -1,8 +1,8 @@
-<<<<<<< HEAD:marvel-characters/src/App.css
 body {
-=======
-/* .App {
->>>>>>> 8b831f9647cbb6197fce34f428857b47e7089887:src/App.css
+  text-align: center;
+}
+
+.opening-text {
   text-align: center;
 }
 
@@ -39,4 +39,4 @@ body {
   to {
     transform: rotate(360deg);
   }
-} */
+}
