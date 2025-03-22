@@ -91,18 +91,20 @@ const Mealie = () => {
         <div className="container mt-5">
             <h1 className="text-center mb-4">Mealie</h1>
             {/* <button type="submit" className="btn btn-primary">Add Meal</button> */}
+            <div className="button-container"> 
             <button
                 className="btn btn-primary mt-4"
                 onClick={() => setShowModal(true)}
             >
                 Add Meal
             </button>
+            </div>
             {/* Calendar View */}
             <div className="table-responsive">
                 <table className="table table-bordered table-hover text-center">
                     <thead>
                         <tr>
-                            <th>Day</th>
+                            
                             <th>Breakfast</th>
                             <th>Lunch</th>
                             <th>Dinner</th>

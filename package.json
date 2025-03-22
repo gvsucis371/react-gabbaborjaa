@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD:marvel-characters/package.json
   "name": "marvel-characters",
-=======
-  "name": "mealie",
->>>>>>> 8b831f9647cbb6197fce34f428857b47e7089887:package.json
   "version": "0.1.0",
   "private": true,
   "dependencies": {
