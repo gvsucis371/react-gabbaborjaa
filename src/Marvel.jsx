@@ -1,19 +1,13 @@
-import './Marvel.css';
-import { useState } from "react";
-
-const data = [
-  { hero: "Iron Man", name: "Tony Stark" },
-  { hero: "Captain America", name: "Steve Rogers" },
-  { hero: "Spider-Man", name: "Peter Parker" },
-  { hero: "Winter Soldier", name: "Bucky Barnes" },
-  { hero: "Hulk", name: "Bruce Banner" },
-];
+import { useState, useEffect } from "react";
+import "./Marvel.css";
+import { db } from "./firebase-config"; 
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore"; 
 
 function Hero({ hero, name, onUpdate, onDelete }) {
   return (
     <div className="hero-wrapper">
-      <h2>Hero: {hero}</h2>
-      <p>Name: {name}</p>
+      <h2>{hero}</h2>
+      <p>{name}</p>
       <button onClick={onUpdate}>Update</button>
       <button onClick={onDelete}>Delete</button>
     </div>
@@ -23,10 +17,10 @@ function Hero({ hero, name, onUpdate, onDelete }) {
 function HeroForm({ onSubmit }) {
   const [hero, setHero] = useState({ hero: "", name: "" });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(hero);
-    setHero({ hero: "", name: "" }); // Reset form after submission
+    await onSubmit(hero);
+    setHero({ hero: "", name: "" });
   };
 
   return (
@@ -49,9 +43,21 @@ function HeroForm({ onSubmit }) {
 }
 
 function Marvel() {
-  const [heroes, setHeroes] = useState(data);
+  const [heroes, setHeroes] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [formData, setFormData] = useState({ hero: "", name: "" });
+
+  useEffect(() => {
+    const fetchHeroes = async () => {
+      const heroesCollection = collection(db, "heroes");
+      const querySnapshot = await getDocs(heroesCollection);
+      setHeroes(
+        querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    };
+
+    fetchHeroes();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -63,8 +69,13 @@ function Marvel() {
     setFormData(heroes[index]);
   };
 
-  const updateHero = (e) => {
+  const updateHero = async (e) => {
     e.preventDefault();
+
+    const heroesCollection = collection(db, "heroes");
+    const heroDoc = doc(heroesCollection, heroes[editingIndex].id); 
+    await updateDoc(heroDoc, { hero: formData.hero, name: formData.name });
+
     const updatedHeroes = [...heroes];
     updatedHeroes[editingIndex] = formData;
     setHeroes(updatedHeroes);
@@ -72,13 +83,25 @@ function Marvel() {
     setFormData({ hero: "", name: "" });
   };
 
-  const addHero = (newHero) => {
-    setHeroes([...heroes, newHero]);
+  const addHero = async (newHero) => {
+    const heroesCollection = collection(db, "heroes");
+    await addDoc(heroesCollection, newHero);
+
+    const querySnapshot = await getDocs(heroesCollection);
+    setHeroes(
+      querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    );
   };
 
-  const deleteHero = (index) => {
-    const updatedHeroes = heroes.filter((_, i) => i !== index);
-    setHeroes(updatedHeroes);
+  const deleteHero = async (index) => {
+    const heroesCollection = collection(db, "heroes");
+    const heroDoc = doc(heroesCollection, heroes[index].id); 
+    await deleteDoc(heroDoc);
+
+    const querySnapshot = await getDocs(heroesCollection);
+    setHeroes(
+      querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    );
   };
 
   return (
@@ -95,7 +118,7 @@ function Marvel() {
       <section className="heros-container">
         {heroes.map((hero, index) => (
           <Hero
-            key={index}
+            key={hero.id}
             hero={hero.hero}
             name={hero.name}
             onUpdate={() => startEditing(index)}
