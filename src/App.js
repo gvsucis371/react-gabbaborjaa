@@ -1,6 +1,6 @@
 import Marvel from './Marvel';
- import './App.css';
- 
+import './App.css';
+
  function App() {
   return (
    <div> 

@@ -1,4 +1,4 @@
-import './index.css';
+import './Marvel.css';
 import { useState } from "react";
 
 const data = [
