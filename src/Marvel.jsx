@@ -72,6 +72,10 @@ function Marvel() {
   const updateHero = async (e) => {
     e.preventDefault();
 
+    if (!formData.hero.trim() || !formData.name.trim()){
+      alert("Both hero and real name required.");
+      return;
+    }
     const heroesCollection = collection(db, "heroes");
     const heroDoc = doc(heroesCollection, heroes[editingIndex].id); 
     await updateDoc(heroDoc, { hero: formData.hero, name: formData.name });
@@ -84,6 +88,10 @@ function Marvel() {
   };
 
   const addHero = async (newHero) => {
+    if (!newHero.hero.trim() || !newHero.name.trim()){
+      alert("Both hero and real name required.");
+      return;
+    }
     const heroesCollection = collection(db, "heroes");
     await addDoc(heroesCollection, newHero);
 
